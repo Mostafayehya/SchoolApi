@@ -1,11 +1,14 @@
 package com.example.SchoolApi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name="student"
+        ,catalog="schoolapi"
+        , uniqueConstraints = @UniqueConstraint(columnNames="name")
+)
 public class Student {
 
     @Id
@@ -14,7 +17,15 @@ public class Student {
     private String email;
     private String password;
 
-    private List<Course> courses = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name="course_student",
+            joinColumns = @JoinColumn(name="student_id"),
+            inverseJoinColumns = @JoinColumn(name="course_id")
+    )
+    private List<Course> courses ;
+
 
     public List<Course> getCourses() {
         return courses;
